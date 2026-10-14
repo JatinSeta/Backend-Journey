@@ -1,0 +1,139 @@
+{
+  "info": {
+    "name": "To-Do List REST API",
+    "description": "Postman collection for testing the To-Do List Express & SQLite REST API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000",
+      "type": "string"
+    },
+    {
+      "key": "taskId",
+      "value": "1",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Get All Tasks",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/tasks",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "tasks"]
+        },
+        "description": "Retrieves the list of all tasks ordered by newest first."
+      }
+    },
+    {
+      "name": "2. Create Task (Success)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Complete Backend Project\",\n  \"description\": \"Build Express REST API and connect to database\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/tasks",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "tasks"]
+        },
+        "description": "Creates a new task. Returns HTTP 201 Created."
+      }
+    },
+    {
+      "name": "3. Create Task (Validation Error - Empty Title)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"\",\n  \"description\": \"Testing empty title validation\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/tasks",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "tasks"]
+        },
+        "description": "Tests validation handling when required title is empty. Returns HTTP 400 Bad Request."
+      }
+    },
+    {
+      "name": "4. Get Task by ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/tasks/{{taskId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "tasks", "{{taskId}}"]
+        },
+        "description": "Fetches a single task by its numeric ID."
+      }
+    },
+    {
+      "name": "5. Update Task (Toggle Completed or Edit Title)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Complete Backend Project (Reviewed)\",\n  \"completed\": true\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/tasks/{{taskId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "tasks", "{{taskId}}"]
+        },
+        "description": "Updates task properties. Returns HTTP 200 OK."
+      }
+    },
+    {
+      "name": "6. Delete Task",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/tasks/{{taskId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "tasks", "{{taskId}}"]
+        },
+        "description": "Deletes a task by ID. Returns HTTP 200 OK."
+      }
+    },
+    {
+      "name": "7. Get Non-Existent Task (404 Error Test)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/tasks/99999",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "tasks", "99999"]
+        },
+        "description": "Verifies 404 Not Found error handling when task ID does not exist."
+      }
+    }
+  ]
+}

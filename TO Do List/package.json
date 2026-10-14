@@ -1,0 +1,14 @@
+{
+  "name": "todo-list-app",
+  "version": "1.0.0",
+  "description": "To-Do List REST API with Express, SQLite, and React",
+  "scripts": {
+    "start:backend": "npm --prefix backend start",
+    "dev:backend": "npm --prefix backend run dev",
+    "start:frontend": "npm --prefix frontend run dev",
+    "test:backend": "node backend/test_api.js"
+  },
+  "keywords": ["express", "react", "sqlite", "rest-api", "todo-list"],
+  "author": "",
+  "license": "ISC"
+}
