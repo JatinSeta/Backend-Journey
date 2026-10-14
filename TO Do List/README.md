@@ -24,9 +24,11 @@ A simple, beginner-friendly full-stack To-Do List application built with **Expre
 
 ```text
 TO Do List/
+├── api/
+│   └── index.js                # Vercel serverless function entry point
 ├── backend/
 │   ├── server.js               # Express application and REST API routes
-│   ├── db.js                   # SQLite database connection and schema initialization
+│   ├── db.js                   # Universal SQLite database connection with Vercel support
 │   ├── todos.db                # SQLite database file (created automatically)
 │   ├── test_api.js             # Automated API test suite
 │   ├── postman_collection.json # Exported Postman collection for 1-click import
@@ -39,7 +41,8 @@ TO Do List/
 │   │   └── main.jsx            # React root mount
 │   ├── vite.config.js          # Vite configuration with proxy
 │   └── package.json            # Frontend dependencies
-├── package.json                # Root convenience scripts
+├── vercel.json                 # Vercel deployment configuration
+├── package.json                # Root build and run scripts
 └── README.md                   # Documentation and API guide
 ```
 
@@ -258,3 +261,28 @@ If you supply a non-numeric ID (e.g. `/api/tasks/abc`):
    - Set dropdown to `DELETE`
    - URL: `http://localhost:5000/api/tasks/1`
    - Click **Send**.
+
+---
+
+## 🌐 Deploying to Vercel (Why Build Failed & How It Is Solved)
+
+### Why did the build fail earlier?
+1. **Missing `"build"` script in root `package.json`**: When you import a repository, Vercel executes `npm run build` in the root folder. Without a `"build"` script in root `package.json`, Vercel immediately errors with `npm error Missing script: "build"`.
+2. **Output Directory mismatch**: Vite produces build artifacts inside `frontend/dist`. Without configuration, Vercel looks for `./dist` in the root.
+3. **Serverless Filesystem**: Vercel lambdas have a read-only filesystem except `/tmp`.
+
+### What has been configured to fix it:
+- ✅ **Root `"build"` script added**: Installs frontend dependencies, builds Vite React, and guarantees the output is placed in `./dist`.
+- ✅ **`vercel.json` configured**: Specifies `"buildCommand": "npm run build"`, `"outputDirectory": "dist"`, and routes `/api/*` to the Express serverless function.
+- ✅ **`api/index.js` added**: Exports the Express REST API as a Vercel Serverless Function.
+- ✅ **Ephemeral SQLite & Fallback Storage**: Automatically detects Vercel (`process.env.VERCEL`) and uses `/tmp` so the database does not encounter read-only filesystem errors.
+
+### Deployment Steps:
+1. Push your project to **GitHub**.
+2. Go to [vercel.com](https://vercel.com) and click **"Add New Project"**.
+3. Import your repository.
+4. Leave all settings at default (**Root Directory: `./`**, **Build Command: default**, **Output Directory: default**).
+5. Click **Deploy**!
+   - Your frontend will be live at `https://your-app.vercel.app`
+   - Your API will be live at `https://your-app.vercel.app/api/tasks`
+

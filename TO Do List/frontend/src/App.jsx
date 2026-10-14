@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import './App.css';
 
-// Base API URL (falls back to relative path using Vite proxy or directly to port 5000)
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/tasks';
+// Base API URL (uses relative /api/tasks so it works seamlessly on Vercel and local Vite proxy)
+const API_URL = import.meta.env.VITE_API_URL || '/api/tasks';
 
 export default function App() {
   const [tasks, setTasks] = useState([]);

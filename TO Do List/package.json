@@ -3,12 +3,27 @@
   "version": "1.0.0",
   "description": "To-Do List REST API with Express, SQLite, and React",
   "scripts": {
+    "build": "npm --prefix frontend install && npm --prefix frontend run build && node -e \"const fs = require('fs'); fs.cpSync('frontend/dist', 'dist', { recursive: true });\"",
+    "start": "node backend/server.js",
     "start:backend": "npm --prefix backend start",
     "dev:backend": "npm --prefix backend run dev",
     "start:frontend": "npm --prefix frontend run dev",
     "test:backend": "node backend/test_api.js"
   },
-  "keywords": ["express", "react", "sqlite", "rest-api", "todo-list"],
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "keywords": [
+    "express",
+    "react",
+    "sqlite",
+    "rest-api",
+    "todo-list"
+  ],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.3.0"
+  }
 }
